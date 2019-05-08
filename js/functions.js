@@ -16,7 +16,7 @@ $(window).resize(function() {
 });
 
 (function($) {
-	$.fn.typewriter = function() {
+	$.fn.typewriter = function(f) {
 		this.each(function() {
 			var $ele = $(this), str = $ele.html(), progress = 0;
 			$ele.html('');
@@ -29,6 +29,7 @@ $(window).resize(function() {
 				}
 				$ele.html(str.substring(0, progress) + (progress & 1 ? '_' : ''));
 				if (progress >= str.length) {
+					f();
 					clearInterval(timer);
 				}
 			}, 75);

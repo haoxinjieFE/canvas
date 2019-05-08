@@ -4,24 +4,18 @@
 	<meta charset="utf-8">
 	<title>一封信</title>	    
     <link type="text/css" rel="stylesheet" href="css/default.css">
-		
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jscex.min.js"></script>
-	<script type="text/javascript" src="js/jscex-parser.js"></script>
-	<script type="text/javascript" src="js/jscex-jit.js"></script>
-	<script type="text/javascript" src="js/jscex-builderbase.min.js"></script>
-	<script type="text/javascript" src="js/jscex-async.min.js"></script>
-	<script type="text/javascript" src="js/jscex-async-powerpack.min.js"></script>
-	<script type="text/javascript" src="js/functions.js" charset="utf-8"></script>
-	<script type="text/javascript" src="js/love.js" charset="utf-8"></script>
-	
 	<style type="text/css">
-		/*.STYLE1 {
-			color: #666666;
-		}*/
+		body {
+			transition: all 1s;
+		}
 	</style>
 </head>
 <body>
+		<audio id="a" src="./music/forgive.mp3"  loop ></audio>
+		<aside id="library">
+				<img src="images/big-glow.png" id="big-glow" />
+				<img src="images/small-glow.png" id="small-glow" />
+			  </aside>
 	<!--==============================================================-->
 	<div id="main">
         <div id="error">
@@ -31,11 +25,17 @@
             <div id="text">
 		        <div id="code">
 		      		<font color="#FF0000">  	
-		      			<span class="say">几年不见韩晴晴同学你好~</span><br>
-						<span class="say"></span><br>
-						<span class="say">你还是依旧学霸不过好像变高冷了, 还是因为学霸不擅长聊天哈哈...</span><br>
-						<span class="say"></span><br>
-                        <span class="say"><span class="space"></span> -- 高一同学郝xx</span>
+		      			<span class="say">燕燕你好~</span><br>
+		      			<span class="say">我喜欢你</span><br>
+		      			<span class="say">声音暖暖的样子</span><br>
+		      			<span class="say">气不过的时候一声长长的拖音</span><br>
+		      			<span class="say">虽然嘴硬但是内心很柔软</span><br>
+						<span class="say">我不喜欢你</span><br>
+		      			<span class="say">跟别的男的玩的开心过来和我炫耀</span><br>
+		      			<span class="say">我关心你的时候你说谢谢</span><br>
+		      			<span class="say">我明明这么帅气，你却不承认...</span><br>
+						<span class="say"><span class="space"></span> --your dad</span><br>
+                        <span class="say">我喜欢你的时候你看天空...</span>						
 			  		</font>
 			  		</p>
       			</div>
@@ -47,6 +47,17 @@
     
 
 	<!--==========================================================-->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jscex.min.js"></script>
+	<script type="text/javascript" src="js/jscex-parser.js"></script>
+	<script type="text/javascript" src="js/jscex-jit.js"></script>
+	<script type="text/javascript" src="js/jscex-builderbase.min.js"></script>
+	<script type="text/javascript" src="js/jscex-async.min.js"></script>
+	<script type="text/javascript" src="js/jscex-async-powerpack.min.js"></script>
+	<script type="text/javascript" src="js/functions.js" charset="utf-8"></script>
+	<script type="text/javascript" src="js/love.js" charset="utf-8"></script>
+	<script src="js/requestanimframe.js"></script>
+	<script src="js/fireworks.js"></script>
     <script>
 	    (function(){
 	        var canvas = $('#canvas');
@@ -171,38 +182,40 @@
 	                foot.draw();
 	                $await(Jscex.Async.sleep(25));
 	            }
-	        }));
-	
+			}));
+			var render = function() {
+				console.log(1)
+				Fireworks.initialize();
+				window.setInterval(() => {
+					Fireworks.createFirework()
+				}, Math.round(Math.random() * 4000 + 1000))
+			}
+			var change = function() {
+				document.body.style.background = "#000"
+			}
 	        var textAnimate = eval(Jscex.compile("async", function () {
-			    var together = new Date();
-			    together.setFullYear(2010,1 , 15); 			//时间年月日
-			    together.setHours(16);						//小时	
-			    together.setMinutes(53);					//分钟
-			    together.setSeconds(0);					//秒前一位
-			    together.setMilliseconds(2);				//秒第二位
-	
-			    $("#code").show().typewriter();
+			    $("#code").show().typewriter(function() {
+					change();
+					setTimeout(function() {
+						render();
+					}, 1000)
+				});
 	            $("#clock-box").fadeIn(500);
-	            while (true) {
-	                timeElapse(together);
-	                $await(Jscex.Async.sleep(1000));
-	            }
-	        }));
-	
+			}));
 	        var runAsync = eval(Jscex.compile("async", function () {
 	            $await(seedAnimate());
 	            $await(growAnimate());
 	            $await(flowAnimate());
-	            $await(moveAnimate());
-	
-	            textAnimate().start();
-	
-	            $await(jumpAnimate());
-	        }));
-	
-	        runAsync().start();
-	    })();
-	    
-    </script>
+				$await(moveAnimate());
+				textAnimate().start();
+			}));
+			runAsync().start()
+
+		})();
+		document.body.addEventListener('click', function() {
+			const a = document.getElementById('a');
+			a.play();
+		}, false)
+	</script>
 </body>
 </html>
